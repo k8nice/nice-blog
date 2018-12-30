@@ -18,7 +18,7 @@ public interface UserService {
      *
      * @param User
      */
-    void addUser(User User);
+    String addUser(User User,HttpServletRequest request);
 
     /**
      * 根据用户名查出salt和密码

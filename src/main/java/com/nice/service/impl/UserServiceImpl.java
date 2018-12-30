@@ -5,9 +5,11 @@ import com.nice.model.User;
 import com.nice.service.UserService;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 /**
  * @author nice
@@ -35,8 +37,17 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
-    public void addUser(User user) {
+    public String addUser(User user,HttpServletRequest request) {
+        String salt = String.valueOf(UUID.randomUUID());
+        String hashAlgorithmName = "MD5";
+        int hashIterations = 1024;
+        String md5Password = String.valueOf(new SimpleHash(hashAlgorithmName,user.getUserPassword(),salt,hashIterations));
+        user.setUserPassword(md5Password);
+        user.setUserSalt(salt);
         userMapper.addUser(user);
+        Long userId = userMapper.queryUserIdByUserName(user.getUserName());
+        request.getSession().setAttribute("USER_ID",userId);
+        return "redirect:main";
     }
 
     /**
