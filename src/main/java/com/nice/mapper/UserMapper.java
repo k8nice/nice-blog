@@ -29,4 +29,11 @@ public interface UserMapper {
      * @return
      */
     String queryUserPasswordByUser(String userName);
+
+    /**
+     * 根据用户名获取salt
+     * @param userName
+     * @return
+     */
+    String queryUserSaltByUserName(String userName);
 }

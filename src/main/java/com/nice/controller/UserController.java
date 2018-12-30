@@ -2,7 +2,7 @@ package com.nice.controller;
 
 import com.nice.model.User;
 import com.nice.service.UserService;
-import com.nice.util.Md5SaltTool;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
+
+import java.util.UUID;
 
 /**
  * @author nice
@@ -55,15 +55,16 @@ public class UserController {
     @PostMapping("/register")
     public void registerSubmit(String userName, String userPassword
             , String userRealName, String userIdCard, String userEmail, String userPhone, String userAddress) {
-        //  userPassword = MD5S
-        try {
-            userPassword = Md5SaltTool.getEncryptedPwd(userPassword);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        //以下为md5加密,注册的时候先加密一遍
+        String salt = String.valueOf(UUID.randomUUID());
+        String hashAlgorithmName = "MD5";
+        int hashIterations = 1024;
+        String md5Password = String.valueOf(new SimpleHash(hashAlgorithmName,userPassword,salt,hashIterations));
+        //------------------
         User user = new User();
+        user.setUserSalt(salt);
         user.setUserName(userName);
-        user.setUserPassword(userPassword);
+        user.setUserPassword(md5Password);
         user.setUserRealName(userRealName);
         user.setUserIdCard(userIdCard);
         user.setUserEmail(userEmail);
@@ -92,17 +93,18 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public String loginSubmit(String userName, String userPassword) {
+        //登录的时候再次加密密码，跟数据库中已加密的密码做比较，如果相同，则登陆成功
+        String salt = userService.queryUserSaltByUserName(userName);
+        String hashAlgorithmName = "MD5";
+        int hashIterations = 1024;
+        String md5Password = String.valueOf(new SimpleHash(hashAlgorithmName,userPassword,salt,hashIterations));
         String resultUserPassword = userService.queryUserPasswordByUser(userName);
-        if (null != resultUserPassword) {
-            try {
-                if (Md5SaltTool.validPassword(userPassword, resultUserPassword)) {
-                    return "success";
-                }
-            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        return "error";
+       if (md5Password.equals(resultUserPassword)){
+           return "success";
+       }
+       else {
+           return "error";
+       }
     }
 
     /**

@@ -8,12 +8,17 @@
         where user_name = #{userName};
     </select>
     <insert id="addUser">
-        insert into user(user_name, user_password, user_real_name, user_id_card, user_email, user_phone, user_address)
+        insert into user(user_name, user_password, user_real_name, user_id_card, user_email, user_phone, user_address,user_salt)
         values (#{userName}, #{userPassword}, #{userRealName}, #{userIdCard}, #{userEmail}, #{userPhone},
-                #{userAddress});
+                #{userAddress},#{userSalt});
     </insert>
     <select id="queryUserPasswordByUser" resultType="java.lang.String">
         select user_password
+        from user
+        where user_name = #{userName};
+    </select>
+    <select id="queryUserSaltByUserName" resultType="java.lang.String">
+        select user_salt
         from user
         where user_name = #{userName};
     </select>

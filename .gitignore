@@ -3,18 +3,21 @@
 
 ### STS ###
 .apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+        .classpath
+        .factorypath
+        .project
+        .settings
+        .springBeans
+        .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
+target/
+out/
+
 
 ### NetBeans ###
 /nbproject/private/

@@ -32,4 +32,5 @@ public class User implements Serializable {
     private String userEmail;
     private String userPhone;
     private String userAddress;
+    private String userSalt;
 }
