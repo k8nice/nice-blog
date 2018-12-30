@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * @author nice
@@ -29,11 +31,14 @@ public class ArticleController {
      * @param articleTitle
      * @param articleType
      * @param articleContent
-     * @param userName
      */
     @PostMapping("/add")
-    public void addArticle(String articleTitle, String articleType, String articleContent,String userName){
-        Long userId = userService.queryUserIdByUserName(userName);
+    public void addArticle(String articleTitle, String articleType, String articleContent, Long userId, HttpServletRequest request){
+        Long sessionUserId = (Long) request.getSession().getAttribute("user_id");
+        if (sessionUserId.equals(userId)){
+            //
+        }
+       // Long userId = userService.queryUserIdByUserName(userName);
         Article article = new Article();
         article.setArticleTitle(articleTitle);
         article.setArticleType(articleType);
@@ -49,4 +54,5 @@ public class ArticleController {
     public String add(){
         return "/article/add";
     }
+
 }

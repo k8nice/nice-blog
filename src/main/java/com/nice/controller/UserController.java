@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 /**
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     /**
-     * 登陆验证
+     * 注册提交
      * @param user
      */
     @ResponseBody
@@ -52,6 +53,8 @@ public class UserController {
         String hashAlgorithmName = "MD5";
         int hashIterations = 1024;
         String md5Password = String.valueOf(new SimpleHash(hashAlgorithmName,user.getUserPassword(),salt,hashIterations));
+        user.setUserPassword(md5Password);
+        user.setUserSalt(salt);
         //------------------
         userService.addUser(user);
     }
@@ -75,9 +78,12 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping("/login")
-    public String loginSubmit(String userName, String userPassword) {
+    public String loginSubmit(String userName, String userPassword, HttpServletRequest request) {
         //登录的时候再次加密密码，跟数据库中已加密的密码做比较，如果相同，则登陆成功
         User user = userService.queryUserPasswordAndSaltByUserName(userName);
+        Long userId = userService.queryUserIdByUserName(userName);
+        System.out.println(userId);
+        request.getSession().setAttribute("USER_ID",userId);
         String salt = user.getUserSalt();
         String hashAlgorithmName = "MD5";
         int hashIterations = 1024;
