@@ -3,6 +3,7 @@ package com.nice.controller;
 import com.nice.model.Article;
 import com.nice.service.ArticleService;
 import com.nice.service.UserService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +34,10 @@ public class ArticleController {
      * @param articleContent
      */
     @PostMapping("/add")
-    public void addArticle(String articleTitle, String articleType, String articleContent, Long userId, HttpServletRequest request){
-        Long sessionUserId = (Long) request.getSession().getAttribute("user_id");
-        if (sessionUserId.equals(userId)){
-            //
-        }
-       // Long userId = userService.queryUserIdByUserName(userName);
+    public void addArticle(String articleTitle, String articleType, String articleContent,Long userId, HttpServletRequest request){
+        System.out.println(userId);
+        Long sessionUserId = (Long) request.getSession().getAttribute("USER_ID");
+        System.out.println(sessionUserId);
         Article article = new Article();
         article.setArticleTitle(articleTitle);
         article.setArticleType(articleType);
@@ -51,7 +50,8 @@ public class ArticleController {
      * 跳转到添加文章页面
      */
     @GetMapping("/add")
-    public String add(){
+    public String add(HttpServletRequest request){
+        System.out.println(request.getSession().getAttribute("USER_ID"));
         return "/article/add";
     }
 
