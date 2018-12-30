@@ -12,14 +12,12 @@
         values (#{userName}, #{userPassword}, #{userRealName}, #{userIdCard}, #{userEmail}, #{userPhone},
                 #{userAddress},#{userSalt});
     </insert>
-    <select id="queryUserPasswordByUser" resultType="java.lang.String">
-        select user_password
+    <select id="queryUserPasswordAndSaltByUserName" resultType="com.nice.model.User">
+        select user_password  "userPassword",user_salt  "userSalt"
         from user
         where user_name = #{userName};
     </select>
-    <select id="queryUserSaltByUserName" resultType="java.lang.String">
-        select user_salt
-        from user
-        where user_name = #{userName};
+    <select id="queryUserIdByUserName" resultType="java.lang.Long">
+        select user_id from user where user_name=#{userName};
     </select>
 </mapper>

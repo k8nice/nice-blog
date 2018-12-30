@@ -84,7 +84,7 @@ public class UserController {
     }
 
     /**
-     * 登陆
+     * 登陆提交
      *
      * @param userName
      * @param userPassword
@@ -94,11 +94,13 @@ public class UserController {
     @PostMapping("/login")
     public String loginSubmit(String userName, String userPassword) {
         //登录的时候再次加密密码，跟数据库中已加密的密码做比较，如果相同，则登陆成功
-        String salt = userService.queryUserSaltByUserName(userName);
+        User user = userService.queryUserPasswordAndSaltByUserName(userName);
+        String salt = user.getUserSalt();
         String hashAlgorithmName = "MD5";
         int hashIterations = 1024;
         String md5Password = String.valueOf(new SimpleHash(hashAlgorithmName,userPassword,salt,hashIterations));
-        String resultUserPassword = userService.queryUserPasswordByUser(userName);
+        //数据库中查询的密码
+        String resultUserPassword = user.getUserPassword();
        if (md5Password.equals(resultUserPassword)){
            return "success";
        }

@@ -19,17 +19,18 @@ public interface UserService {
     void addUser(User User);
 
     /**
-     * 根据用户名查询密码
+     * 根据用户名查出salt和密码
      *
      * @param userName
      * @return
      */
-    String queryUserPasswordByUser(String userName);
+    User queryUserPasswordAndSaltByUserName(String userName);
 
     /**
-     * 根据用户名获取salt
+     * 根据用户名查询用户id
      * @param userName
      * @return
      */
-    String queryUserSaltByUserName(String userName);
+    Long queryUserIdByUserName(String userName);
+
 }
