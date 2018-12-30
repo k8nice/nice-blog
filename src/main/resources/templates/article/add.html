@@ -17,11 +17,11 @@
     </script>
 </head>
 <body>
+文章标题<input type="text" name="articleTitle"><br>
+文章类型<input type="text" name="articleType"><br>
 <div id="summernote">Hello Summernote</div>
-<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}" ></script>
 <script type="text/javascript">
-    var content = ue.getEditor('summernote').getContent();
-    alert(content);
+    alert($('#summernote').html());
 </script>
 </body>
 </html>

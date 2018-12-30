@@ -29,20 +29,11 @@ public class ArticleController {
 
     /**
      * 添加一篇文章
-     * @param articleTitle
-     * @param articleType
-     * @param articleContent
      */
     @PostMapping("/add")
-    public void addArticle(String articleTitle, String articleType, String articleContent,Long userId, HttpServletRequest request){
-        System.out.println(userId);
+    public void addArticle(Article article, HttpServletRequest request){
         Long sessionUserId = (Long) request.getSession().getAttribute("USER_ID");
-        System.out.println(sessionUserId);
-        Article article = new Article();
-        article.setArticleTitle(articleTitle);
-        article.setArticleType(articleType);
-        article.setArticleContent(articleContent);
-        article.setUserId(userId);
+        article.setUserId(sessionUserId) ;
         articleService.addArticle(article);
     }
 

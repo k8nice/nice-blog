@@ -37,4 +37,11 @@ public interface UserMapper {
      */
     Long queryUserIdByUserName(String userName);
 
+    /**
+     * 通过用户id获取用户名
+     * @param userId
+     * @return
+     */
+    String queryUserNameByUserId(Long userId);
+
 }

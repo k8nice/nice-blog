@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,26 +77,23 @@ public class UserController {
      * @param userPassword
      * @return
      */
-    @ResponseBody
     @PostMapping("/login")
     public String loginSubmit(String userName, String userPassword, HttpServletRequest request) {
-        //登录的时候再次加密密码，跟数据库中已加密的密码做比较，如果相同，则登陆成功
-        User user = userService.queryUserPasswordAndSaltByUserName(userName);
-        Long userId = userService.queryUserIdByUserName(userName);
-        System.out.println(userId);
-        request.getSession().setAttribute("USER_ID",userId);
-        String salt = user.getUserSalt();
-        String hashAlgorithmName = "MD5";
-        int hashIterations = 1024;
-        String md5Password = String.valueOf(new SimpleHash(hashAlgorithmName,userPassword,salt,hashIterations));
-        //数据库中查询的密码
-        String resultUserPassword = user.getUserPassword();
-       if (md5Password.equals(resultUserPassword)){
-           return "success";
-       }
-       else {
-           return "error";
-       }
+        return userService.isLogin(userName,userPassword,request);
+    }
+
+    /**
+     * 跳转主页面
+     * @param request
+     * @return
+     */
+    @GetMapping("/main")
+    public String main(HttpServletRequest request){
+        Long userId = (Long) request.getSession().getAttribute("USER_ID");
+        String userName = userService.queryUserNameByUserId(userId);
+        System.out.println(userName);
+        request.setAttribute("userName",userName);
+        return  "main";
     }
 
     /**

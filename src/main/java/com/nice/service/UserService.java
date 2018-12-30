@@ -2,6 +2,8 @@ package com.nice.service;
 
 import com.nice.model.User;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserService {
     /**
      * 根据用户名查询用户
@@ -32,5 +34,14 @@ public interface UserService {
      * @return
      */
     Long queryUserIdByUserName(String userName);
+
+    /**
+     * 根据用户id获取用户名
+     * @param userId
+     * @return
+     */
+    String queryUserNameByUserId(Long userId);
+
+    String isLogin(String userName, String userPassword, HttpServletRequest request);
 
 }
