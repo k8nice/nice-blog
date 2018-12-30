@@ -8,12 +8,12 @@ import sun.reflect.generics.tree.VoidDescriptor;
 @Mapper
 public interface UserMapper {
     /**
-     * 查询所有用户
+     * 根据用户名查询用户
      *
      * @param userName
      * @return
      */
-    String queryUserNameAll(String userName);
+    String  queryUserNameByUserName(String userName);
 
     /**
      * 添加用户

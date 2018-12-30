@@ -16,14 +16,14 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     /**
-     * 查询全部用户
+     * 根据用户名查询用户
      *
      * @param userName
      * @return
      */
     @Override
-    public String queryUserNameAll(String userName) {
-        return userMapper.queryUserNameAll(userName);
+    public String queryUserNameByUserName(String userName) {
+        return userMapper.queryUserNameByUserName(userName);
     }
 
     /**

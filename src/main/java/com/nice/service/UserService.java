@@ -4,12 +4,12 @@ import com.nice.model.User;
 
 public interface UserService {
     /**
-     * 查询全部用户
+     * 根据用户名查询用户
      *
      * @param userName
      * @return
      */
-    String queryUserNameAll(String userName);
+    String queryUserNameByUserName(String userName);
 
     /**
      * 添加用户

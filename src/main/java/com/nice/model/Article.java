@@ -12,6 +12,16 @@ import java.util.Date;
 public class Article implements Serializable {
 
     private static final long serialVersionUID = -4184375624816977716L;
+    /**
+     * 文章id
+     * 文章标题
+     * 文章类型
+     * 文章创建日期
+     * 文章更新日期
+     * 文章内容
+     * 用户id
+     * 文章是否存在
+     */
     private Long articleId;
     private String articleTitle;
     private String articleType;

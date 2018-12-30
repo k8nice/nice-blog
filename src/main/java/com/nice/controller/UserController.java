@@ -32,7 +32,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/isExist")
     public String isUserExist(String userName) {
-        String resultName = userService.queryUserNameAll(userName);
+        String resultName = userService.queryUserNameByUserName(userName);
         if (resultName == null) {
             return "用户名不存在";
         } else {
@@ -41,35 +41,18 @@ public class UserController {
     }
 
     /**
-     * 登陆提交
-     *
-     * @param userName
-     * @param userPassword
-     * @param userRealName
-     * @param userIdCard
-     * @param userEmail
-     * @param userPhone
-     * @param userAddress
+     * 登陆验证
+     * @param user
      */
     @ResponseBody
     @PostMapping("/register")
-    public void registerSubmit(String userName, String userPassword
-            , String userRealName, String userIdCard, String userEmail, String userPhone, String userAddress) {
+    public void registerSubmit(User user) {
         //以下为md5加密,注册的时候先加密一遍
         String salt = String.valueOf(UUID.randomUUID());
         String hashAlgorithmName = "MD5";
         int hashIterations = 1024;
-        String md5Password = String.valueOf(new SimpleHash(hashAlgorithmName,userPassword,salt,hashIterations));
+        String md5Password = String.valueOf(new SimpleHash(hashAlgorithmName,user.getUserPassword(),salt,hashIterations));
         //------------------
-        User user = new User();
-        user.setUserSalt(salt);
-        user.setUserName(userName);
-        user.setUserPassword(md5Password);
-        user.setUserRealName(userRealName);
-        user.setUserIdCard(userIdCard);
-        user.setUserEmail(userEmail);
-        user.setUserPhone(userPhone);
-        user.setUserAddress(userAddress);
         userService.addUser(user);
     }
 

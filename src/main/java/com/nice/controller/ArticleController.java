@@ -5,6 +5,7 @@ import com.nice.service.ArticleService;
 import com.nice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,8 +24,15 @@ public class ArticleController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 添加一篇文章
+     * @param articleTitle
+     * @param articleType
+     * @param articleContent
+     * @param userName
+     */
     @PostMapping("/add")
-    public String addArticle(String articleTitle, String articleType, String articleContent,String userName){
+    public void addArticle(String articleTitle, String articleType, String articleContent,String userName){
         Long userId = userService.queryUserIdByUserName(userName);
         Article article = new Article();
         article.setArticleTitle(articleTitle);
@@ -32,6 +40,13 @@ public class ArticleController {
         article.setArticleContent(articleContent);
         article.setUserId(userId);
         articleService.addArticle(article);
-        return "/article/list";
+    }
+
+    /**
+     * 跳转到添加文章页面
+     */
+    @GetMapping("/add")
+    public String add(){
+        return "/article/add";
     }
 }

@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>添加文章</title>
 </head>
 <body>
-
+    <script type="text/javascript" th:src="@{/js/ueditor.config.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ueditor.all.js}"></script>
+    <script type="text/javascript">
+        var ue = UE.getEditor('container');
+    </script>
 </body>
 </html>
