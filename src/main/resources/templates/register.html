@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+</head>
+<body>
+    <form action="/user/register" id="register-model" method="post">
+        用户姓名<input type="text" id="user-name" name="userName"><scan id="user-name-isExist"></scan><br>
+        用户密码<input type="password" id="user-password" name="userPassword"><br>
+        用户真实姓名<input type="text" id="user-real-name" name="userRealName"><br>
+        用户身份证号<input type="text" id="user-id-card" name="userIdCard"><br>
+        用户邮箱<input type="text" id="user-email" name="userEmail"><br>
+        用户手机号<input type="text" id="user-phone" name="userPhone"><br>
+        用户地址<input type="text" id="user-address" name="userAddress"><br>
+        <input type="submit" value="提交">
+    </form>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript">
+        <!-- 判断是否失去焦点发送ajax到后台 -->
+        $('#user-name').blur(function () {
+            var userName = $('#user-name').val();
+            $.ajax({
+                url:'/user/isExist',
+                data:'userName='+userName,
+                type:'post',
+                success:function (msg) {
+                    $('#user-name-isExist').html('');
+                    $('#user-name-isExist').append(msg);
+                }
+            })
+        })
+    </script>
+</body>
+</html>
