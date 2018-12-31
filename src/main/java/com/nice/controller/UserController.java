@@ -46,9 +46,10 @@ public class UserController {
      */
     @PostMapping("/register")
     public String registerSubmit(User user,HttpServletRequest request) {
-        //以下为md5加密,注册的时候先加密一遍
-        //------------------
-     return    userService.addUser(user,request);
+        userService.addUser(user);
+        Long userId = userService.queryUserIdByUserName(user.getUserName());
+        request.getSession().setAttribute("USER_ID",userId);
+        return "redirect:main";
     }
 
     /**
@@ -70,7 +71,13 @@ public class UserController {
      */
     @PostMapping("/login")
     public String loginSubmit(String userName, String userPassword, HttpServletRequest request) {
-        return userService.isLogin(userName,userPassword,request);
+        if (userService.isLogin(userName,userPassword)){
+            Long userId = userService.queryUserIdByUserName(userName);
+            request.getSession().setAttribute("USER_ID",userId);
+            return "redirect:main";
+        }else {
+            return "error";
+        }
     }
 
     /**

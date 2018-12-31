@@ -40,7 +40,7 @@ public class MyAdapter extends WebMvcConfigurationSupport {
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login","/user/register","/user/isExist","/js/*","/css/*");
+        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login","/user/register","/static/**");
         super.addInterceptors(registry);
     }
 

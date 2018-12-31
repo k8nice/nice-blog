@@ -18,7 +18,7 @@ public interface UserService {
      *
      * @param User
      */
-    String addUser(User User,HttpServletRequest request);
+    void addUser(User User);
 
     /**
      * 根据用户名查出salt和密码
@@ -42,6 +42,6 @@ public interface UserService {
      */
     String queryUserNameByUserId(Long userId);
 
-    String isLogin(String userName, String userPassword, HttpServletRequest request);
+    boolean isLogin(String userName, String userPassword);
 
 }

@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
-    public String addUser(User user,HttpServletRequest request) {
+    public void addUser(User user) {
         String salt = String.valueOf(UUID.randomUUID());
         String hashAlgorithmName = "MD5";
         int hashIterations = 1024;
@@ -45,9 +45,6 @@ public class UserServiceImpl implements UserService {
         user.setUserPassword(md5Password);
         user.setUserSalt(salt);
         userMapper.addUser(user);
-        Long userId = userMapper.queryUserIdByUserName(user.getUserName());
-        request.getSession().setAttribute("USER_ID",userId);
-        return "redirect:main";
     }
 
     /**
@@ -73,11 +70,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String isLogin(String userName, String userPassword, HttpServletRequest request) {
+    public boolean isLogin(String userName, String userPassword) {
         User user = userMapper.queryUserPasswordAndSaltByUserName(userName);
         Long userId = userMapper.queryUserIdByUserName(userName);
         System.out.println(userId);
-        request.getSession().setAttribute("USER_ID",userId);
         String salt = user.getUserSalt();
         String hashAlgorithmName = "MD5";
         int hashIterations = 1024;
@@ -85,10 +81,10 @@ public class UserServiceImpl implements UserService {
         //数据库中查询的密码
         String resultUserPassword = user.getUserPassword();
         if (md5Password.equals(resultUserPassword)){
-            return "redirect:main";
+            return true;
         }
         else {
-            return "error";
+            return false;
         }
     }
 
