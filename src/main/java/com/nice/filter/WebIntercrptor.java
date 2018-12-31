@@ -6,6 +6,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author nice
+ */
 public class WebIntercrptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -15,6 +18,7 @@ public class WebIntercrptor extends HandlerInterceptorAdapter {
         if (request.getSession().getAttribute("USER_ID")!=null) {
             return true;
         }else {
+            response.sendRedirect("/user/login");
             return false;
         }
     }

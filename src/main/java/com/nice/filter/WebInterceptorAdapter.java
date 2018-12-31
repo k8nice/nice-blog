@@ -24,7 +24,6 @@ public class WebInterceptorAdapter implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-       // registry.addViewController("/error").setViewName("404.html");
     }
 
     @Override

@@ -4,6 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nice.mapper.ArticleMapper">
     <insert id="addArticle" >
-        insert into article(article_title,article_type,article_content,user_id) values(#{articleTitle},#{articleType},#{articleContent},#{userId}) ;
+        insert into article(article_title,article_type,article_content,user_id,article_create_date,article_update_date) values(#{articleTitle},#{articleType},#{articleContent},#{userId},#{articleCreateDate},#{articleUpdateDate}) ;
     </insert>
+    <select id="queryArticleAll" resultType="com.nice.model.Article">
+        select article_id,article_title,article_type,article_create_date,article_update_date,article_content,user_id,is_exist from article;
+    </select>
+    <select id="queryArticleByUserId" resultType="com.nice.model.Article">
+        select article_id,article_title,article_type,article_create_date,article_update_date,article_content,user_id from article where is_exist = 1
+        and user_id = #{userId}
+    </select>
+    <update id="deleteArticleByUserIdAndArticleId">
+        update article set is_exist = 0 where article_id = #{articleId} and user_id = #{userId} ;
+    </update>
 </mapper>

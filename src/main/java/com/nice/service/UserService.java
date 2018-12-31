@@ -2,7 +2,6 @@ package com.nice.service;
 
 import com.nice.model.User;
 
-import javax.servlet.http.HttpServletRequest;
 
 public interface UserService {
     /**

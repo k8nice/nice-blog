@@ -6,6 +6,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
+/**
+ * @author nice
+ */
 public class Md5SaltTool {
 
     private static final String HEX_NUMS_STR="0123456789ABCDEF";

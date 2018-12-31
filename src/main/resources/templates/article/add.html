@@ -17,11 +17,17 @@
     </script>
 </head>
 <body>
-文章标题<input type="text" name="articleTitle"><br>
-文章类型<input type="text" name="articleType"><br>
-<div id="summernote">Hello Summernote</div>
+<form action="/article/add" onsubmit="articleSubmit()" id="article" method="post">
+    <div id="summernote">Hello Summernote</div>
+    文章标题<input type="text" name="articleTitle"><br>
+    文章类型<input type="text" name="articleType"><br>
+    <input type="submit" value="提交">
+</form>
 <script type="text/javascript">
-    alert($('#summernote').html());
+    function articleSubmit() {
+        var articleContent =  $('#summernote').html();
+        $('#article').append('<input type="text" value=\"'+articleContent+'\" name="articleContent">')
+    }
 </script>
 </body>
 </html>

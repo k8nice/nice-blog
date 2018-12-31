@@ -2,7 +2,6 @@ package com.nice.mapper;
 
 import com.nice.model.User;
 import org.apache.ibatis.annotations.Mapper;
-import sun.reflect.generics.tree.VoidDescriptor;
 
 
 @Mapper
