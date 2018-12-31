@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>注册页面</title>
+    <!--<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>-->
 </head>
 <body>
     <form action="/user/register" id="register-model" method="post">
@@ -19,7 +20,7 @@
     </form>
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <script type="text/javascript">
-        <!-- 判断是否失去焦点发送ajax到后台 -->
+        //<!-- 判断是否失去焦点发送ajax到后台 -->
         $('#user-name').blur(function () {
             var userName = $('#user-name').val();
             $.ajax({

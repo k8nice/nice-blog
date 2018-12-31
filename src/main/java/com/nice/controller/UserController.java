@@ -46,10 +46,15 @@ public class UserController {
      */
     @PostMapping("/register")
     public String registerSubmit(User user,HttpServletRequest request) {
-        userService.addUser(user);
-        Long userId = userService.queryUserIdByUserName(user.getUserName());
-        request.getSession().setAttribute("USER_ID",userId);
-        return "redirect:main";
+        String resultName = userService.queryUserNameByUserName(user.getUserName());
+        if (resultName == null) {
+            userService.addUser(user);
+            Long userId = userService.queryUserIdByUserName(user.getUserName());
+            request.getSession().setAttribute("USER_ID", userId);
+            return "redirect:main";
+        } else {
+            return "redirect:register";
+        }
     }
 
     /**
