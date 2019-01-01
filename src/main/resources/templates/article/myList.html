@@ -14,16 +14,22 @@
 <body>
     <!--<form action="/article/delete" method="post" id="article-delete-form" >-->
         <ul th:each="article:${articleList}">
-            <a  th:text="${article?.articleTitle}" id="article-title" th:href="@{${article?.articleTitle}}">
+            <a  th:text="${article?.articleTitle}" id="article-title" class="article-title" th:href="@{${article?.articleTitle}}">
             </a>
+            <a th:href="@{'../delete/'+${article?.articleId}}">删除</a>
         </ul>
     <!--</form>-->
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <script type="text/javascript">
-       $('#article-delete').unbind('click').on('click',function () {
-          var articleTitle = $(this).html();
-          alert(articleTitle)
-       })
+
+
+
+
+
+      // $('#article-delete').unbind('click').on('click',function () {
+      //    var articleTitle = $(this).html();
+      //    alert(articleTitle)
+      // })
     </script>
 </body>
 </html>

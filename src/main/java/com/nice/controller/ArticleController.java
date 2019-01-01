@@ -6,6 +6,7 @@ import com.nice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -63,9 +64,14 @@ public class ArticleController {
         return "/article/myList";
     }
 
-    @PostMapping("/delete")
-    public void delete(Article article){
+    @GetMapping("/delete/{articleId}")
+    public String delete(@PathVariable("articleId") Long articleId,HttpServletRequest request){
+        Long userId = (Long) request.getSession().getAttribute("USER_ID");
+        Article article = new Article();
+        article.setUserId(userId);
+        article.setArticleId(articleId);
         articleService.deleteArticleByUserIdAndArticleId(article);
+        return "redirect:../../user/main";
     }
 
 }
