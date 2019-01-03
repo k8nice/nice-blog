@@ -8,8 +8,29 @@ import java.util.List;
  * @author nice
  */
 public interface ArticleService {
+    /**
+     * 添加一篇文章
+     * @param article
+     */
     void addArticle(Article article);
-    List<Article> queryArticleAll();
-    List<Article> queryArticleByUserId(Long userId);
+
+    /**
+     * 根据每页的文章个数，和需要查询的页数获取文章列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<Article> queryArticleAll(Long pageNum,Long pageSize);
+
+    /**
+     *
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<Article> queryArticleByUserId(Long userId,Long pageNum,Long pageSize);
     void deleteArticleByUserIdAndArticleId(Article article);
+    Long queryUserArticlePages(Long userId);
+    Article queryArticleByArticleTitle(Long articleId);
 }

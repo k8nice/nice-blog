@@ -35,4 +35,11 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @param article
      */
     void deleteArticleByUserIdAndArticleId(Article article);
+
+    /**
+     * 根据文章标题查询文章
+     * @param articleId
+     * @return
+     */
+    Article queryArticleByArticleId(Long articleId);
 }

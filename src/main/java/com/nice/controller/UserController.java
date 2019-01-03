@@ -2,7 +2,6 @@ package com.nice.controller;
 
 import com.nice.model.User;
 import com.nice.service.UserService;
-import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,8 +48,7 @@ public class UserController {
         String resultName = userService.queryUserNameByUserName(user.getUserName());
         if (resultName == null) {
             userService.addUser(user);
-            Long userId = userService.queryUserIdByUserName(user.getUserName());
-            request.getSession().setAttribute("USER_ID", userId);
+            request.getSession().setAttribute("USER",user);
             return "redirect:main";
         } else {
             return "redirect:register";
@@ -78,7 +76,10 @@ public class UserController {
     public String loginSubmit(String userName, String userPassword, HttpServletRequest request) {
         if (userService.isLogin(userName,userPassword)){
             Long userId = userService.queryUserIdByUserName(userName);
-            request.getSession().setAttribute("USER_ID",userId);
+            User user = new User();
+            user.setUserName(userName);
+            user.setUserId(userId);
+            request.getSession().setAttribute("USER",user);
             return "redirect:main";
         }else {
             return "error";
@@ -92,10 +93,9 @@ public class UserController {
      */
     @GetMapping("/main")
     public String main(HttpServletRequest request){
-        Long userId = (Long) request.getSession().getAttribute("USER_ID");
-        String userName = userService.queryUserNameByUserId(userId);
-        System.out.println(userName);
-        request.setAttribute("userName",userName);
+        User user = (User) request.getSession().getAttribute("USER");
+        System.out.println(user.getUserName());
+        request.setAttribute("userName",user.getUserName());
         return  "main";
     }
 

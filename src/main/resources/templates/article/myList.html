@@ -10,26 +10,64 @@
     </style>
     <meta charset="UTF-8">
     <title>我的文章列表</title>
+    <style type="text/css" th:href="@{/layui/css/layui.css}"></style>
 </head>
 <body>
-    <!--<form action="/article/delete" method="post" id="article-delete-form" >-->
-        <ul th:each="article:${articleList}">
-            <a  th:text="${article?.articleTitle}" id="article-title" class="article-title" th:href="@{${article?.articleTitle}}">
-            </a>
-            <a th:href="@{'../delete/'+${article?.articleId}}">删除</a>
-        </ul>
-    <!--</form>-->
+<div id="demo7"></div>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>显示完整功能</legend>
+        </fieldset>
+<ul id="biuuu_city_list"></ul>
+<ul id="view"></ul>
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
-    <script type="text/javascript">
-
-
-
-
-
-      // $('#article-delete').unbind('click').on('click',function () {
-      //    var articleTitle = $(this).html();
-      //    alert(articleTitle)
-      // })
-    </script>
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 </body>
+<script type="text/javascript">
+    var pagesNum = 1;
+    var pagesSize = 10;
+    var pages = {'pagesNum':pagesNum,'pagesSize':pagesSize};
+    layui.use(['laypage', 'element','layer'], function() {
+        var laypage = layui.laypage
+            , layer = layui.layer;
+        var counts = 0;
+            function layAjax(){
+                $.ajax({
+                    url:'/article/user/pages',
+                    data:'pagesNum='+pagesNum+'&pagesSize='+pagesSize,
+                    type:'get',
+                    async: false,
+                    success: function (msg) {
+                        var element = layui.element
+                        element.init();
+                        var article = JSON.parse(msg);
+                        counts = article.allPages;
+                        alert('数据总数为' + counts)
+                        var articleList = article.articleList;
+                        $('#view').html('')
+                        $(articleList).each(function (i) {
+                            $('#view').append('<a href= "/article/query/exist/content/'+articleList[i].articleId+'\">'+articleList[i].articleTitle + '</a>' + '<br>')
+                        })
+                    }
+                })
+            }
+            layAjax();
+            laypage.render({
+                elem: 'demo7'
+                , count: counts
+                , limit: pagesSize
+                , curr: pagesNum
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , jump: function (obj) {
+                    alert('页数'+counts)
+                    pagesNum = obj.curr;
+                    pagesSize = obj.limit;
+
+                }
+            });
+
+
+        });
+
+
+</script>
 </html>

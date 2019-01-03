@@ -1,5 +1,6 @@
 package com.nice.filter;
 
+import com.nice.model.User;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -15,7 +16,8 @@ public class WebIntercrptor extends HandlerInterceptorAdapter {
         long startTime = System.currentTimeMillis();
         request.setAttribute("startTime",startTime);
         System.out.println("前拦截器处理完毕");
-        if (request.getSession().getAttribute("USER_ID")!=null) {
+        User user = (User) request.getSession().getAttribute("USER");
+        if (user!=null) {
             return true;
         }else {
             response.sendRedirect("/user/login");
