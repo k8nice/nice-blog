@@ -30,7 +30,13 @@ public interface ArticleService {
      * @return
      */
     List<Article> queryArticleByUserId(Long userId,Long pageNum,Long pageSize);
-    void deleteArticleByUserIdAndArticleId(Article article);
+    void deleteArticleByArticleId(Article article);
     Long queryUserArticlePages(Long userId);
+    Long queryAllArticlePages();
     Article queryArticleByArticleTitle(Long articleId);
+    Long queryCtrByArticleId(Long articleId);
+    Long updateCtr(Long articleId,Long ctr);
+    List<String> queryArticleTypeAll();
+    List<Article> queryArticleByArticleType(String articleType);
+//    Long queryArticleIdByArticleTitle(String articleTitle);
 }

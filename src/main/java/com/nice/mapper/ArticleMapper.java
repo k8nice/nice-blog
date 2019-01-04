@@ -34,7 +34,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * 根据文章id和用户id删除文章
      * @param article
      */
-    void deleteArticleByUserIdAndArticleId(Article article);
+    void deleteArticleByArticleId(Article article);
 
     /**
      * 根据文章标题查询文章
@@ -42,4 +42,16 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @return
      */
     Article queryArticleByArticleId(Long articleId);
+
+
+
+    Long queryCtrByArticleId(Long articleId);
+
+    Long updateCtr(Long articleId,Long ctr);
+
+    List<String> queryArticleTypeAll();
+
+    List<Article> queryArticleByArticleType(String articleType);
+
+//    Long queryArticleIdByArticleTitle(String articleTitle);
 }

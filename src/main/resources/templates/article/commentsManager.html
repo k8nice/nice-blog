@@ -4,31 +4,22 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>文章列表</title>
-    <!--<style type="text/css">-->
-        <!--#comments-text{-->
-            <!--width: 300px;-->
-            <!--height: 150px;-->
-        <!--}-->
-    <!--</style>-->
+    <title>用户评论管理</title>
 </head>
 <body>
-    <h1>文章列表</h1>
+    <input type="hidden" th:value="${articleId}" id="article-id">
     <div id="demo7"></div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
         <legend>显示完整功能</legend>
     </fieldset>
     <ul id="biuuu_city_list"></ul>
     <ul id="view"></ul>
-    <h1>留言板</h1>
-    <!--<div class="comments">-->
-        <!--<textarea rows="3" cols="15" id="comments-text">-->
-
-        <!--</textarea>-->
-    <!--</div>-->
-    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <script type="text/javascript">
+        var articleId = $('#article-id').val();
+     //   alert($('#article-id').val());
+
         var pagesNum = 1;
         var pagesSize = 10;
         var pages = {'pagesNum':pagesNum,'pagesSize':pagesSize};
@@ -38,20 +29,24 @@
             var counts = 0;
             function layAjax(){
                 $.ajax({
-                    url:'/article/list/all',
-                    data:'pagesNum='+pagesNum+'&pagesSize='+pagesSize,
+                    url:'/comments/query/comments',
+                    data:'articleId='+articleId+'&pageNum='+pagesNum,
                     type:'get',
                     async: false,
                     success: function (msg) {
+                        alert(msg)
                         var element = layui.element
                         element.init();
-                        var article = JSON.parse(msg);
-                        counts = article.allPages;
+                        var comments = JSON.parse(msg);
+                        counts = comments.allPages;
                         alert('数据总数为' + counts)
-                        var articleList = article.articleList;
+                        var commentsDtoList = comments.commentsDtoList;
                         $('#view').html('')
-                        $(articleList).each(function (i) {
-                            $('#view').append('<a href= "/article/query/exist/content/'+articleList[i].articleId+'\">'+articleList[i].articleTitle + '</a>' + '<br>')
+                        $(commentsDtoList).each(function (i) {
+                            alert(commentsDtoList[i].userName);
+                            alert(commentsDtoList[i].commentsContent);
+                            alert('id='+commentsDtoList[i].commentsId);
+                            $('#view').append('<p>'+'<b>'+commentsDtoList[i].userName+'</b>'+'&nbsp;'+commentsDtoList[i].commentsContent+'<a href="/comments/delete/'+commentsDtoList[i].commentsId+'">'+'删除'+'</a>'+'</p>')
                         })
                     }
                 })
@@ -70,7 +65,6 @@
                     if (!first){
                         layAjax();
                     }
-
                 }
             });
 

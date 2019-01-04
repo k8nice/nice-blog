@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nice.mapper.AccessMapper">
+    <insert id="addAccess">
+        insert into access(access_time,access_ip,article_id,user_id) values (#{accessTime},#{accessIP},#{articleId},#{userId})
+    </insert>
+    <select id="dayAccess" resultType="java.lang.Long">
+        select count(access_id) from access where access_time > date_sub(curdate(),interval 1 day) and article_id = #{articleId};
+    </select>
+    <select id="weekAccess" resultType="java.lang.Long">
+        select count(access_id) from access where access_time > date_sub(curdate(),interval 1 week) and article_id = #{articleId};
+    </select>
+    <select id="monthAccess" resultType="java.lang.Long">
+        select count(access_id) from access where access_time > date_sub(curdate(),interval 1 month) and article_id = #{articleId};
+    </select>
+    <select id="yearAccess" resultType="java.lang.Long">
+        select count(access_id) from access where access_time > date_sub(curdate(),interval 1 year) and article_id = #{articleId};
+    </select>
+</mapper>

@@ -56,16 +56,20 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/list/all")
+    @ResponseBody
     public String list(HttpServletRequest request,Long pagesNum,Long pagesSize){
-      //  User user = (User) request.getSession().getAttribute("USER");
-     //   Long allPages = articleService.queryUserArticlePages(user.getUserId());
         List<Article> articleList = articleService.queryArticleAll(pagesNum,pagesSize);
+        Long allPages = articleService.queryAllArticlePages();
         Map<Object,Object> map = new HashMap<Object, Object>();
-     //   map.put("allPages",allPages);
         map.put("articleList",articleList);
+        map.put("allPages",allPages);
         Gson gson = new Gson();
         return gson.toJson(map);
-    //    return "article/allList";
+    }
+
+    @GetMapping("/allList")
+    public String queryAllList(){
+        return "article/allList";
     }
 
 
@@ -109,17 +113,51 @@ public class ArticleController {
         Article article = new Article();
         article.setUserId(user.getUserId());
         article.setArticleId(articleId);
-        articleService.deleteArticleByUserIdAndArticleId(article);
-        return "redirect:../../user/main";
+        articleService.deleteArticleByArticleId(article);
+        return "redirect:../../article/user/list";
     }
 
+    /**
+     * 根据文章id查看文章
+     * @param articleId
+     * @param request
+     * @return
+     */
     @GetMapping("/query/exist/content/{articleId}")
-    public String queryExistArticleContent(@PathVariable("articleId") Long articleId,HttpServletRequest request){
+    public String queryExistArticleContent(@PathVariable("articleId") Long articleId, HttpServletRequest request){
         Article article = articleService.queryArticleByArticleTitle(articleId);
+        Long tempCtr = articleService.queryCtrByArticleId(article.getArticleId());
+        articleService.updateCtr(articleId,tempCtr+1);
+        Long ctr = articleService.queryCtrByArticleId(article.getArticleId());
         request.setAttribute("article",article);
+        request.setAttribute("ctr",ctr);
         return "article/articleContent";
     }
 
+    @ResponseBody
+    @GetMapping("/query/type")
+    public String queryArticleTypeAll(){
+        List<String> list = articleService.queryArticleTypeAll();
+        Gson gson = new Gson();
+        return gson.toJson(list);
+    }
 
+    @GetMapping("/query/type/all")
+    public String queryArticleType(){
+        return "article/type";
+    }
 
+    @GetMapping("/query/type/title/{articleType}")
+    public String queryArticleTitleByArticleType(@PathVariable("articleType") String articleType,HttpServletRequest request){
+        List<Article> list = articleService.queryArticleByArticleType(articleType);
+        request.setAttribute("list",list);
+   //     List<Article> articleList = new ArrayList<Article>();
+        return "article/titleByType";
+    }
+
+//    @GetMapping("/query/title/{articleTitle}")
+//    public String queryArticleIdByArticleTitle(@PathVariable("articleTitle")String articleTitle){
+//    //    Long articleId = articleService.queryArticleIdByArticleTitle(articleTitle);
+//        return "redirect:../../../../article/query/exist/content/"+articleId;
+//    }
 }

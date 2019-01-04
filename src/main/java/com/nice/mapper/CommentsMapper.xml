@@ -3,7 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nice.mapper.CommentsMapper">
-    <select id="queryCommentsByArticleId">
-
+    <select id="queryCommentsByArticleId" resultType="com.nice.model.Comments">
+      select comment_id,user_id,article_id,create_comment_date,update_comment_date,comment_content from comments where article_id=#{articleId};
     </select>
+    <insert id="addComments">
+        insert into comments(user_id,article_id,create_comment_date,update_comment_date,comment_content) values (#{userId},#{articleId},#{createCommentDate},#{updateCommentDate},#{commentContent});
+    </insert>
+    <delete id="deleteComments">
+        delete  from comments where comment_id = #{commentsId};
+    </delete>
 </mapper>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文章类型</title>
+</head>
+<body>
+    <div id="type"></div>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript">
+        $.ajax({
+            url:'/article//query/type',
+            type:'get',
+            success:function (msg) {
+                var type = JSON.parse(msg);
+                alert(msg)
+                $(type).each(function (i) {
+                    $('#type').append('<h1><a href="/article/query/type/title/'+type[i]+'\"">'+type[i]+'</a></h1>')
+                })
+            }
+        })
+    </script>
+</body>
+</html>

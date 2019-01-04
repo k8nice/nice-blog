@@ -11,5 +11,22 @@ import java.util.List;
  */
 @Mapper
 public interface CommentsMapper extends BaseMapper<Comments> {
+    /**
+     * 根据文章id查询评论
+     * @param articleId
+     * @return
+     */
     List<Comments> queryCommentsByArticleId(Long articleId);
+
+    /**
+     * 添加评论
+     * @param comments
+     */
+    void addComments(Comments comments);
+
+    /**
+     * 删除评论
+     * @param commentsId
+     */
+    void deleteComments(Long commentsId);
 }

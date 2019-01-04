@@ -29,5 +29,6 @@ public class Article implements Serializable {
     private Date articleUpdateDate;
     private String articleContent;
     private Long userId;
+    private Long ctr;
     private boolean idExist;
 }

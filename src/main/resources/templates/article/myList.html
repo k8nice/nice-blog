@@ -45,7 +45,8 @@
                         var articleList = article.articleList;
                         $('#view').html('')
                         $(articleList).each(function (i) {
-                            $('#view').append('<a href= "/article/query/exist/content/'+articleList[i].articleId+'\">'+articleList[i].articleTitle + '</a>' + '<br>')
+                            $('#view').append('<a href= "/article/query/exist/content/'+articleList[i].articleId+'\">'+articleList[i].articleTitle + '</a>' +'\t'+'<a href="/article/delete/'+articleList[i].articleId+'\">删除</a>'+
+                                '<a href="/comments/manager/'+articleList[i].articleId+'">'+'\t'+'评论管理</a>'+'<br>')
                         })
                     }
                 })
@@ -57,10 +58,13 @@
                 , limit: pagesSize
                 , curr: pagesNum
                 , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , jump: function (obj) {
+                , jump: function (obj,first) {
                     alert('页数'+counts)
                     pagesNum = obj.curr;
                     pagesSize = obj.limit;
+                    if (!first){
+                        layAjax();
+                    }
 
                 }
             });

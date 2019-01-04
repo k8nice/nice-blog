@@ -1,3 +1,4 @@
+<!-- 整编文章显示 -->
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
@@ -16,18 +17,112 @@
     <h1 th:text="${article?.articleTitle}"></h1>
     <h2 th:text="${article?.articleType}"></h2>
     <p th:text="${article?.articleContent}"></p>
+    点击率<b th:text="${ctr}"></b>
+    <div class="article-access"></div>
     <input type="hidden" th:value="${article?.articleId}" id="article-id">
     <h1>=========评论区============</h1>
     <textarea rel="5" cols="20" id="comments-text">
 
     </textarea>
     <button id="comments-submit">提交</button>
+
+
+    <div id="demo7"></div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>显示完整功能</legend>
+    </fieldset>
+    <ul id="biuuu_city_list"></ul>
+    <ul id="view"></ul>
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <script type="text/javascript">
-            alert('article-id'+$('#article-id').val())
+           // alert('article-id'+$('#article-id').val())
+           var articleId = $('#article-id').val();
+
+           $.ajax({
+               url:'/access/count',
+               type:'get',
+               data:'articleId='+articleId,
+               success:function (msg) {
+                   var accessCount = JSON.parse(msg);
+                   $('.article-access').append('<h1>年访问量是'+accessCount.yearAccessCount+'</h1>')
+                   $('.article-access').append('<h1>月访问量是'+accessCount.monthAccessCount+'</h1>')
+                   $('.article-access').append('<h1>周访问量是'+accessCount.weekAccessCount+'</h1>')
+                   $('.article-access').append('<h1>日访问量是'+accessCount.dayAccessCount+'</h1>')
+
+               }
+           })
+
+           $.ajax({
+               url:'/access/add',
+               type:'get',
+               data:'articleId='+articleId,
+               success:function () {
+                   
+               }
+           })
+
+
         $('#comments-submit').click(function () {
-            alert($('#comments-text').text())
+            var commentsContent = $('#comments-text').val();
+            $.ajax({
+                url:'/comments/add',
+                type:'get',
+                data:'articleId='+articleId+'&commentContent='+commentsContent,
+                success:function () {
+
+                }
+            })
         })
+           var pagesNum = 1;
+           var pagesSize = 10;
+           var pages = {'pagesNum':pagesNum,'pagesSize':pagesSize};
+           layui.use(['laypage', 'element','layer'], function() {
+               var laypage = layui.laypage
+                   , layer = layui.layer;
+               var counts = 0;
+               function layAjax(){
+                   $.ajax({
+                       url:'/comments/query/comments',
+                       data:'articleId='+articleId+'&pageNum='+pagesNum,
+                       type:'get',
+                       async: false,
+                       success: function (msg) {
+                           alert(msg)
+                           var element = layui.element
+                           element.init();
+                           var comments = JSON.parse(msg);
+                           counts = comments.allPages;
+                           alert('数据总数为' + counts)
+                           var commentsDtoList = comments.commentsDtoList;
+                           $('#view').html('')
+                           $(commentsDtoList).each(function (i) {
+                               alert(commentsDtoList[i].userName);
+                               alert(commentsDtoList[i].commentsContent);
+                               $('#view').append('<p>'+'<b>'+commentsDtoList[i].userName+'</b>'+'&nbsp;'+commentsDtoList[i].commentsContent+'</p>')
+                           })
+                       }
+                   })
+               }
+               layAjax();
+               laypage.render({
+                   elem: 'demo7'
+                   , count: counts
+                   , limit: pagesSize
+                   , curr: pagesNum
+                   , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                   , jump: function (obj,first) {
+                       alert('页数'+counts)
+                       pagesNum = obj.curr;
+                       pagesSize = obj.limit;
+                        if (!first){
+                            layAjax();
+                        }
+                   }
+               });
+
+
+           });
     </script>
 </body>
 </html>

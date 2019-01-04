@@ -13,10 +13,25 @@
         select article_id,article_title,article_type,article_create_date,article_update_date,article_content,user_id from article where is_exist = 1
         and user_id = #{userId}
     </select>
-    <update id="deleteArticleByUserIdAndArticleId">
+    <update id="deleteArticleByArticleId">
         update article set is_exist = 0 where article_id = #{articleId} ;
     </update>
     <select id="queryArticleByArticleId" resultType="com.nice.model.Article">
         select article_id,article_title,article_type,article_create_date,article_update_date,article_content,user_id from article where article_id = #{articleId};
     </select>
+    <select id="queryCtrByArticleId" resultType="java.lang.Long">
+        select ctr from article where article_id=#{articleId};
+    </select>
+    <update id="updateCtr">
+        update  article set ctr=#{ctr} where article_id=#{articleId};
+    </update>
+    <select id="queryArticleTypeAll" resultType="java.lang.String">
+        select distinct article_type from article;
+    </select>
+    <select id="queryArticleByArticleType" resultType="com.nice.model.Article">
+        select article_id,article_title,article_type,article_create_date,article_update_date,article_content,user_id from article where article_type=#{articleType};
+    </select>
+    <!--<select id="queryArticleIdByArticleTitle" resultType="java.lang.Long">-->
+        <!--select article_id from article where article_title = #{articleTitle} -->
+    <!--</select>-->
 </mapper>

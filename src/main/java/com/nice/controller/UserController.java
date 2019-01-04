@@ -4,10 +4,7 @@ import com.nice.model.User;
 import com.nice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -97,6 +94,12 @@ public class UserController {
         System.out.println(user.getUserName());
         request.setAttribute("userName",user.getUserName());
         return  "main";
+    }
+
+    @GetMapping("/comments/manager/{articleId}")
+    public String commentsManager(@PathVariable("articleId") Long articleId){
+        System.out.println(articleId);
+        return null;
     }
 
     /**

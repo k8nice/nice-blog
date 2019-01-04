@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.nice.mapper.ArticleMapper;
 import com.nice.model.Article;
-import com.nice.model.User;
 import com.nice.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> queryArticleAll(Long pageNum,Long pageSize) {
-        PageInfo<Article> pageInfo = PageHelper.startPage(Math.toIntExact(pageNum),Math.toIntExact(pageSize)).setOrderBy("article_id desc").doSelectPageInfo(() -> this.articleMapper.queryArticleAll());
+        PageInfo<Article> pageInfo = PageHelper.startPage(Math.toIntExact(pageNum),Math.toIntExact(pageSize)).setOrderBy("article_create_date desc").doSelectPageInfo(() -> this.articleMapper.queryArticleAll());
         return pageInfo.getList();
     }
 
@@ -42,8 +41,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void deleteArticleByUserIdAndArticleId(Article article) {
-        articleMapper.deleteArticleByUserIdAndArticleId(article);
+    public void deleteArticleByArticleId(Article article) {
+        articleMapper.deleteArticleByArticleId(article);
     }
 
     @Override
@@ -54,7 +53,40 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public Long queryAllArticlePages() {
+        PageInfo<Article> pageInfo1 = new PageInfo<Article>(this.articleMapper.queryArticleAll());
+        Long pages = pageInfo1.getTotal();
+        return pages;
+    }
+
+
+    @Override
     public Article queryArticleByArticleTitle(Long articleId) {
         return articleMapper.queryArticleByArticleId(articleId);
     }
+
+    @Override
+    public Long queryCtrByArticleId(Long articleId) {
+        return articleMapper.queryCtrByArticleId(articleId);
+    }
+
+    @Override
+    public Long updateCtr(Long articleId,Long ctr) {
+        return articleMapper.updateCtr(articleId,ctr);
+    }
+
+    @Override
+    public List<String> queryArticleTypeAll() {
+        return articleMapper.queryArticleTypeAll();
+    }
+
+    @Override
+    public List<Article> queryArticleByArticleType(String articleType) {
+        return articleMapper.queryArticleByArticleType(articleType);
+    }
+
+//    @Override
+//    public Long queryArticleIdByArticleTitle(String articleTitle) {
+//        return articleMapper.queryArticleIdByArticleTitle(articleTitle);
+//    }
 }
