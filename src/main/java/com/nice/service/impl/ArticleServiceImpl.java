@@ -61,7 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public Article queryArticleByArticleTitle(Long articleId) {
+    public Article queryArticleByArticleId(Long articleId) {
         return articleMapper.queryArticleByArticleId(articleId);
     }
 

@@ -33,7 +33,7 @@ public interface ArticleService {
     void deleteArticleByArticleId(Article article);
     Long queryUserArticlePages(Long userId);
     Long queryAllArticlePages();
-    Article queryArticleByArticleTitle(Long articleId);
+    Article queryArticleByArticleId(Long articleId);
     Long queryCtrByArticleId(Long articleId);
     Long updateCtr(Long articleId,Long ctr);
     List<String> queryArticleTypeAll();

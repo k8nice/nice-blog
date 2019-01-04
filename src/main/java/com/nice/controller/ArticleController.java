@@ -125,7 +125,7 @@ public class ArticleController {
      */
     @GetMapping("/query/exist/content/{articleId}")
     public String queryExistArticleContent(@PathVariable("articleId") Long articleId, HttpServletRequest request){
-        Article article = articleService.queryArticleByArticleTitle(articleId);
+        Article article = articleService.queryArticleByArticleId(articleId);
         Long tempCtr = articleService.queryCtrByArticleId(article.getArticleId());
         articleService.updateCtr(articleId,tempCtr+1);
         Long ctr = articleService.queryCtrByArticleId(article.getArticleId());
